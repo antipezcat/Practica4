@@ -1,13 +1,15 @@
 <html>
 <head>
 <title>${titulo}</title>
+<link href="/css/stylesheet.css" rel="stylesheet" >
 </head>
 <body>
-<h1>Ejemplo de formulario</h1>
+    <#include "menu.ftl">
+<h1>Registro</h1>
     <form action="/datosEstudiante/" method="post">
         <fieldset>
         <legend>Formulario de Registro</legend>
-         <input name="matricula" type="number" placeholder="Matricula"/><br/>
+         <input name="matricula" type="text" placeholder="Matricula"/><br/>
          <input name="nombre" type="text" placeholder="Nombre"/><br/>
          <input name="apellido" type="text" placeholder="Apellido"/><br/>
          <input name="telefono" type="text" placeholder="Telefono"/><br/>

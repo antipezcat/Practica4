@@ -14,7 +14,7 @@ package practica4;
 public class Estudiante {
     private static int cont = 0;
     int id=cont;
-    int matricula;
+    String matricula;
     String nombre;
     String apellido;
     String telefono;
@@ -26,7 +26,7 @@ public class Estudiante {
 
     @Override
     public String toString() {
-        return String.format(" matricula: %d, Nombre: %s, Apellido: %s, Telefono: %s", matricula, nombre, apellido, telefono);
+        return String.format(" matricula: %s, Nombre: %s, Apellido: %s, Telefono: %s", matricula, nombre, apellido, telefono);
     }
 
     /**
@@ -36,7 +36,7 @@ public class Estudiante {
      * @param apellido
      * @param telefono
      */
-    public Estudiante(int matricula, String nombre, String apellido, String telefono) {
+    public Estudiante(String matricula, String nombre, String apellido, String telefono) {
         this.matricula = matricula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -56,12 +56,12 @@ public class Estudiante {
         this.nombre = nombre;
     }
 
-    public int getMatricula() {
+    public String getMatricula() {
         return matricula;
 
     }
 
-    public void setMatricula(int matricula) {
+    public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
 
@@ -79,6 +79,15 @@ public class Estudiante {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+    
+    
+    public String getEditarLink() {
+        return "<a href='/editarEstudiante/" + this.id + "'>Editar</a>";
+    }
+
+    public String getBorrarLink() {
+        return "<a href='/borrarEstudiante/" + this.id + "'>Borrar</a>";
     }
     
 

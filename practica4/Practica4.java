@@ -35,9 +35,9 @@ public class Practica4 {
         configuration.setClassForTemplateLoading(Practica4.class, "/recursos"); // Indicando la carpeta donde estaran los templates
         FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine(configuration);
 
-        Estudiante estudiantePrueba = new Estudiante(1111625, "Dariana", "Tavera", "8094137185");
-        Estudiante estudiantePrueba1 = new Estudiante (1111665, "Darariant", "Ta", "8094137185");
-        listaEstudiantes.add( estudiantePrueba);
+        Estudiante estudiantePrueba = new Estudiante("1111625", "Dariana", "Tavera", "8094137185");
+        Estudiante estudiantePrueba1 = new Estudiante("111111", "Darariant", "Ta", "8094137185");
+        listaEstudiantes.add(estudiantePrueba);
         listaEstudiantes.add(estudiantePrueba1);
         before((request, response) -> {
             System.out.println("Filtro Before -> Realizando llamada a la ruta: " + request.pathInfo());
@@ -53,14 +53,14 @@ public class Practica4 {
             return new ModelAndView(attributes, "inicio.ftl");
         }, freeMarkerEngine);
 
-        get("/formularioEstudiante/", (request, response) -> {
+        get("/formularioEstudiante", (request, response) -> {
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("titulo", "Formulario en FreeMarker");
             return new ModelAndView(attributes, "formularioEstudiante.ftl");
         }, freeMarkerEngine);
         post("/datosEstudiante/", (request, response) -> {
-           
-            int matricula = Integer.parseInt(request.queryParams("matricula"));
+
+            String matricula = request.queryParams("matricula");
             String nombre = request.queryParams("nombre");
             String apellido = request.queryParams("apellido");
             String telefono = request.queryParams("telefono");
@@ -70,36 +70,41 @@ public class Practica4 {
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("titulo", "Procesando Estudiante");
             attributes.put("estudiante", estudiante);
-
-            //enviando los parametros a la vista.
             return new ModelAndView(attributes, "datosEstudiante.ftl");
         }, freeMarkerEngine); //
-        
+
         get("/lista", (req, res) -> {
 
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("data", listaEstudiantes);
-            System.out.println(" " + listaEstudiantes.toString());
 
-            //enviando los parametros a la vista.
             return new ModelAndView(attributes, "lista.ftl");
 
         }, freeMarkerEngine);
-        
-        
-        get("/editarEstudiante", (request, response) -> {
-            String id = request.params(":id");
-           Estudiante estudianteU = listaEstudiantes.get(Integer.parseInt(id));
+
+        get("/editarEstudiante/:id", (req, res) -> {
             Map<String, Object> attributes = new HashMap<>();
+            String id = req.params(":id");
+            Estudiante estudianteU = listaEstudiantes.get(Integer.parseInt(id)-1);
             attributes.put("estudiante", estudianteU);
-            
+
+            return new ModelAndView(attributes, "editarEstudiante.ftl");
+        }, freeMarkerEngine);
+
+        post("/editarEstudiante/:id", (req, res) -> {
+            Map<String, Object> attributes = new HashMap<>();
+            String id = req.params(":id");
+            Estudiante estudianteU = listaEstudiantes.get(Integer.parseInt(id)-1);
+           System.out.println(estudianteU);
+            attributes.put("estudiante", estudianteU);
             if (estudianteU!= null) {
-                String nMatricula = request.queryParams("matricula");
-                String nNombre = request.queryParams("nombre");
-                String nApellido = request.queryParams("apellido");
-                String nTelefono = request.queryParams("telefono");
+                String nMatricula = req.queryParams("matricula");
+                String nNombre = req.queryParams("nombre");
+                String nApellido = req.queryParams("apellido");
+                String nTelefono = req.queryParams("telefono");
+                
                 if (nMatricula != null) {
-                    estudianteU.setMatricula(Integer.parseInt(nMatricula));
+                    estudianteU.setMatricula(nMatricula);
                 }
                 if (nNombre != null) {
                     estudianteU.setNombre(nNombre);
@@ -110,13 +115,33 @@ public class Practica4 {
                 if (nTelefono != null) {
                     estudianteU.setTelefono(nTelefono);
                 }
-                return "Estudiante Modificado";
+                res.status(200);
+                res.redirect("/inicio");
+                return new ModelAndView(attributes, "inicio.ftl");
             } else {
-                response.status(404); // 404 Not found
-                return "Estudiante no encontrado";
+                res.status(404); // 404 Not found
             }
-        });
-        
+             
+            return new ModelAndView(attributes, "error.ftl");
+        }, freeMarkerEngine); //
+
+          get("/borrarEstudiante/:matricula", (req, res) -> {
+            Map<String, Object> attributes = new HashMap<>();
+            String id = req.params(":id");
+            Estudiante estudianteU = listaEstudiantes.get(Integer.parseInt(id)-1);
+            
+           /* for (Estudiante listaEstudiante : listaEstudiantes) {
+                if(id.equals(listaEstudiante.getId())){
+                estudianteU = listaEstudiante;
+                }
+            }
+           */
+           estudianteU.setApellido("-");
+          estudianteU.setMatricula("-");
+          estudianteU.setNombre("-");
+          estudianteU.setTelefono("-");
+            return new ModelAndView(attributes, "borrarEstudiante.ftl");
+        }, freeMarkerEngine);
         
     }
 

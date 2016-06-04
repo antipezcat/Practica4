@@ -1,16 +1,13 @@
 <html>
     <head>
         <link href="/css/stylesheet.css" rel="stylesheet" >
-        <title>${titulo}</title>
+        <title>Borrar Estudiante</title>
         </head>
     <body>
+    <#include "menu.ftl">
+     <h2>Estudiante borrado con correctamente</h2>   
+    <a id ="button" href="/inicio">precione aqui para redireccionar</a>
 
-        <ul id="menu">
-            <li><a class="active" href="#home"><img src="/img/home.png"></a></li>
-            <li><a href="/formularioEstudiante/">Agregar estudiante</a></li>
-            <li><a href="/listaEstudiantes/">Lista de estudiantes</a></li>
-            </ul>
 
-        
-        </body>
-    </html>
+    </body>
+</html>

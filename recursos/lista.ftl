@@ -1,10 +1,14 @@
 <html>
 <head>
     <title>Lista de Estudiantes</title>
+    <link href="/css/stylesheet.css" rel="stylesheet" >
 </head>
 <body>
+    <#include "menu.ftl">
     <h1>Lista de Estudiantes</h1>
+    
     <#if data??>
+    <div id="lista">
             <table>
                 <tr>
                     <th>ID</th>
@@ -21,14 +25,16 @@
                         <td>${estudiante.getNombre()}</td>
                         <td>${estudiante.getApellido()}</td>
                         <td>${estudiante.getTelefono()}</td>
-                        <td><a href="/editarEstudiante/">Editar</a></td> 
-                        <td><a href="/borrarEstudiante/">Borrar</a></td> 
+                        <td>${estudiante.getEditarLink()}</td> 
+                        <td>${estudiante.getBorrarLink()}</td> 
                     </tr>
                 </#list>
             </table>
+        </div>
         <#else>
             No hay estudiante registrados
         </#if>
     </table>
+     <div id="button"> <a href="/formularioEstudiante" >Agregar estudiante</a> </div>
 </body>
 </html>
